@@ -134,7 +134,12 @@ void MainWindow::openPorts()
         }
         else
         {
-            connect(_port1.data(), &QSerialPort::readyRead, [this]() { _port2->write(_port1->readAll()); });
+            connect(_port1.data(), &QSerialPort::readyRead, [this]()
+            {
+                auto data = _port1->readAll();
+                _port2->write(data);
+                ui->log->append(data.toHex());
+            });
         }
     }
 
@@ -148,7 +153,12 @@ void MainWindow::openPorts()
         }
         else
         {
-            connect(_port2.data(), &QSerialPort::readyRead, [this]() { _port1->write(_port2->readAll()); });
+            connect(_port2.data(), &QSerialPort::readyRead, [this]()
+            {
+                auto data = _port2->readAll();
+                _port1->write(data);
+                ui->log->append(data.toHex());
+            });
         }
     }
 }
