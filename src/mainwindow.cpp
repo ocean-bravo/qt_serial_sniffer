@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->open, &QPushButton::clicked, this, &MainWindow::openPorts);
     connect(ui->close, &QPushButton::clicked, this, &MainWindow::closePorts);
     connect(ui->clear, &QPushButton::clicked, ui->log, &QTextEdit::clear);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -30,71 +32,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//void MainWindow::udpMessage(QString str)
-//{
-//    ui->udpMessages->setTextColor(QColor("black"));
+void MainWindow::addMessage(const QString& source, const QByteArray& msg)
+{
+    if (source == "1:")
+        ui->log->setTextColor(QColor("navy"));
 
-//    QString reText = ui->regExp1->text();
-//    QRegExp rx(reText);
+    if (source == "2:")
+        ui->log->setTextColor(QColor("darkgreen"));
 
-//    if (!reText.isEmpty() && str.contains(rx))
-//    {
-//        if (ui->cut1->isChecked())
-//        {
-//            str.remove(rx);
-//        }
-//        ui->udpMessages->setTextColor(QColor("blue"));
-//    }
 
-//    reText = ui->regExp2->text();
-//    rx = QRegExp(reText);
-
-//    if (!reText.isEmpty() && str.contains(rx))
-//    {
-//        if (ui->cut2->isChecked())
-//        {
-//            str.remove(rx);
-//        }
-//        ui->udpMessages->setTextColor(QColor("orange"));
-//    }
-
-//    reText = ui->regExp3->text();
-//    rx = QRegExp(reText);
-
-//    if (!reText.isEmpty() && str.contains(rx))
-//    {
-//        ui->udpMessages->setTextColor(QColor("red"));
-//    }
-
-//    reText = ui->regExp4->text();
-//    rx = QRegExp(reText);
-
-//    if (!reText.isEmpty() && str.contains(rx))
-//    {
-//        ui->udpMessages->setTextColor(QColor("green"));
-//    }
-
-//    // удаляю любое количество символов \n в конце
-//    rx = QRegExp("[\\n]+$");
-//    str.remove(rx);
-
-//    if (str.isEmpty())
-//        return;
-
-//    if (ui->udpCurrentTime->isChecked())
-//    {
-//        str = QTime::currentTime().toString(Qt::ISODateWithMs) + "\t" + str;
-//    }
-
-//    ui->udpMessages->append(str);
-//}
+    ui->log->append(source + msg.toHex());
+}
 
 void MainWindow::serviceMessage(const QString& msg)
 {
     ui->log->setTextColor(QColor("lightGrey"));
     ui->log->append(msg);
 }
-
 
 void MainWindow::closePorts()
 {
@@ -138,7 +92,7 @@ void MainWindow::openPorts()
             {
                 auto data = _port1->readAll();
                 _port2->write(data);
-                ui->log->append(data.toHex());
+                addMessage("1:", data);
             });
         }
     }
@@ -157,7 +111,7 @@ void MainWindow::openPorts()
             {
                 auto data = _port2->readAll();
                 _port1->write(data);
-                ui->log->append(data.toHex());
+                addMessage("2:", data);
             });
         }
     }

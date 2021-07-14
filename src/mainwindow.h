@@ -38,4 +38,5 @@ private:
 
     QScopedPointer<QSerialPort> _port1;
     QScopedPointer<QSerialPort> _port2;
+    void addMessage(const QString& source, const QByteArray& msg);
 };
