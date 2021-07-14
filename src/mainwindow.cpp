@@ -1,6 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+namespace {
+
+QString convertToAscii(const QByteArray& ba)
+{
+    QString converted;
+
+    while (ba.size() > 0)
+    {
+        converted += QString(" %1").arg(ba.front());
+    }
+
+    return converted;
+}
+
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -24,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->close, &QPushButton::clicked, this, &MainWindow::closePorts);
     connect(ui->clear, &QPushButton::clicked, ui->log, &QTextEdit::clear);
 
-    ui->log->setFont(QFont("Courier"));
+    ui->log->setFont(QFont("Consolas"));
 }
 
 MainWindow::~MainWindow()
@@ -41,7 +57,7 @@ void MainWindow::addMessage(const QString& source, const QByteArray& msg)
         ui->log->setTextColor(QColor("darkgreen"));
 
     ui->log->append(source + msg.toHex().toUpper());
-    ui->log->append(source + msg);
+    ui->log->append(source + convertToAscii(msg));
 }
 
 void MainWindow::serviceMessage(const QString& msg)
