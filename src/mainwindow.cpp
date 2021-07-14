@@ -7,10 +7,8 @@ QString convertToAscii(const QByteArray& ba)
 {
     QString converted;
 
-    while (ba.size() > 0)
-    {
-        converted += QString(" %1").arg(ba.front());
-    }
+    for (const char c: ba)
+        converted += QString(" %1").arg(c);
 
     return converted;
 }
