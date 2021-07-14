@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->close, &QPushButton::clicked, this, &MainWindow::closePorts);
     connect(ui->clear, &QPushButton::clicked, ui->log, &QTextEdit::clear);
 
-
+    ui->log->setFont(QFont("Courier"));
 }
 
 MainWindow::~MainWindow()
@@ -39,7 +39,6 @@ void MainWindow::addMessage(const QString& source, const QByteArray& msg)
 
     if (source == "2:")
         ui->log->setTextColor(QColor("darkgreen"));
-
 
     ui->log->append(source + msg.toHex());
 }
