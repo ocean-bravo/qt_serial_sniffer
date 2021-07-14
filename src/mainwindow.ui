@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>641</width>
+    <height>346</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Terminal</string>
   </property>
@@ -24,6 +32,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
          <string>Open</string>
         </property>
@@ -36,6 +50,12 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
         </property>
         <property name="text">
          <string>Close</string>
@@ -56,10 +76,24 @@
        </spacer>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="serial2"/>
+       <widget class="QComboBox" name="serial2">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QComboBox" name="serial1"/>
+       <widget class="QComboBox" name="serial1">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
@@ -106,46 +140,13 @@
       </property>
       <widget class="QWidget" name="layoutWidget2">
        <layout class="QGridLayout" name="udpGridLayout">
-        <item row="1" column="3">
-         <widget class="QCheckBox" name="currentTime">
-          <property name="text">
-           <string>Current time</string>
-          </property>
-         </widget>
+        <item row="0" column="0" colspan="2">
+         <widget class="QTextEdit" name="log"/>
         </item>
         <item row="1" column="0">
          <widget class="QPushButton" name="clear">
           <property name="text">
            <string>Clear</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="stop">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Stop</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QTextEdit" name="log"/>
-        </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="start">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Start</string>
           </property>
          </widget>
         </item>

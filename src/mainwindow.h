@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMap>
+#include <QTimer>
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QSerialPortInfo>
@@ -39,4 +40,7 @@ private:
     QScopedPointer<QSerialPort> _port1;
     QScopedPointer<QSerialPort> _port2;
     void addMessage(const QString& source, const QByteArray& msg);
+    void fillCombos();
+
+    QTimer* _timer;
 };

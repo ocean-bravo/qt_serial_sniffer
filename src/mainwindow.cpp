@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QSet>
+
 namespace {
 
 QString convertToAscii(const QByteArray& ba)
@@ -18,27 +20,38 @@ QString convertToAscii(const QByteArray& ba)
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , _timer(new QTimer(this))
 {
     ui->setupUi(this);
 
-    const QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
-
-    ui->serial1->addItem("");
-    ui->serial2->addItem("");
-
-    for (const auto& portInfo : ports)
-    {
-        _ports.insert(portInfo.portName(), portInfo);
-    }
-
-    ui->serial1->addItems(_ports.keys());
-    ui->serial2->addItems(_ports.keys());
+    _timer->setInterval(1000);
+    _timer->setSingleShot(false);
+    _timer->start();
 
     connect(ui->open, &QPushButton::clicked, this, &MainWindow::openPorts);
     connect(ui->close, &QPushButton::clicked, this, &MainWindow::closePorts);
     connect(ui->clear, &QPushButton::clicked, ui->log, &QTextEdit::clear);
 
     ui->log->setFont(QFont("Consolas"));
+
+    connect(_timer, &QTimer::timeout, this, [this]()
+    {
+        const QList<QSerialPortInfo> av = QSerialPortInfo::availablePorts();
+        QMap<QString, QSerialPortInfo> ports;
+
+        for (const auto& portInfo : av)
+        {
+            ports.insert(portInfo.portName(), portInfo);
+        }
+
+        QSet<QString> subtraction = _ports.keys().toSet().subtract(ports.keys().toSet());
+
+        if (!subtraction.empty())
+        {
+            _ports = ports;
+            fillCombos();
+        }
+    });
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +69,18 @@ void MainWindow::addMessage(const QString& source, const QByteArray& msg)
 
     ui->log->append(source + msg.toHex().toUpper());
     ui->log->append(source + convertToAscii(msg));
+}
+
+void MainWindow::fillCombos()
+{
+    ui->serial1->clear();
+    ui->serial2->clear();
+
+    ui->serial1->addItem("");
+    ui->serial2->addItem("");
+
+    ui->serial1->addItems(_ports.keys());
+    ui->serial2->addItems(_ports.keys());
 }
 
 void MainWindow::serviceMessage(const QString& msg)
@@ -130,4 +155,3 @@ void MainWindow::openPorts()
         }
     }
 }
-
