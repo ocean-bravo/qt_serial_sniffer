@@ -44,9 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
             ports.insert(portInfo.portName(), portInfo);
         }
 
-        QSet<QString> subtraction = _ports.keys().toSet().subtract(ports.keys().toSet());
-
-        if (!subtraction.empty())
+        if (_ports.keys().toSet() != ports.keys().toSet())
         {
             _ports = ports;
             fillCombos();
