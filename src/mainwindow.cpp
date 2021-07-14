@@ -40,7 +40,8 @@ void MainWindow::addMessage(const QString& source, const QByteArray& msg)
     if (source == "2:")
         ui->log->setTextColor(QColor("darkgreen"));
 
-    ui->log->append(source + msg.toHex());
+    ui->log->append(source + msg.toHex().toUpper());
+    ui->log->append(source + msg);
 }
 
 void MainWindow::serviceMessage(const QString& msg)
